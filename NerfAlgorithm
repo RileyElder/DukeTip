@@ -14,3 +14,4 @@ try:
         print 'Please stay within assigned range'
 except ValueError:
     print ('Please input angle')
+    print''
