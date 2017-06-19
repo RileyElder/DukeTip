@@ -1,17 +1,18 @@
 import numpy as np
 x=[-40,-20,0,20,40,60,80]
 y=[61,177.33,296.33,680.33,651,534.67,24.67,]
-result = np.polyfit(x,y,3)
+result = np.polyfit(x,y,4)
 eq = np.poly1d(result)
 x2=np.arange(-40,90)
 yfit = np.polyval(result,x2)
-try:
-    user_input=int(raw_input('Input angle between -40 and 90'))
-    if user_input>=int(-40):
-        if user_input<=int(90):
+while True: #repeats
+    try:
+        user_input=int(raw_input('Input angle between -40 and 90'))#initiates input
+        if user_input<=int(-40): #catches inputs out of range
+            print 'Please stay within assigned range'
+        elif user_input>=int(90):
+            print 'Please stay within assigned range'
+        else: #correct end state, prints result
             print eq(user_input)
-    else:
-        print 'Please stay within assigned range'
-except ValueError:
-    print ('Please input angle')
-    print''
+    except ValueError: #catches non-number entries
+        print ('Please input number')
