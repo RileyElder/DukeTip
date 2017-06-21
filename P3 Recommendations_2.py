@@ -96,7 +96,7 @@ movieRatingTemp = {} # replace 0 with code for an empty dictionary
 for movie in movieData:
     if movie['movie'] not in movieRatingTemp:
         movieRatingTemp[movie['movie']]=[]
-    movieRatingTemp[movie['movie']].append(movie['Rated'])
+    movieRatingTemp[movie['movie']].append(movie['Rate'])
 # For every row in the movie data, add the rating to a list in the dictionary entry
 # for that movies ID (don't forget to initialize the dictionary entry)
 
