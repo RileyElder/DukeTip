@@ -60,26 +60,29 @@ def processLikes(iLike):
 
 # Load Data
 # Load the movie names data (u.item) with just columns 0 and 1 (id and name) id is np.int, name is S128
-movieNames = np.loadtxt('./ml-100k/u.item',
-                        delimiter='\t', usecol=(0, 1),
+movieNames = np.loadtxt('.\ml-100k\u.item',
+                        delimiter='|', usecols=(0, 1),
                         dtype={'names': ('id', 'name'),
-                               'formats':(np.int, 'S128')})
+                                'formats': (np.int, 'S128')
+                               }
+                        )
 # replace 0 with the correct code to load the movie names
-    
+
 # Create a dictionary with the ids as keys and the names as the values
 movieDict = dict(zip(movieNames['id'], movieNames['name'])) # replace 0 with the code to make the dict
 # Load the movie Data (u.data) with just columns 0, 1, and 2 (user, movie, rating) all are np.int
 movieData = np.loadtxt('./ml-100k/u.data',
-                        delimiter='\t', usecol=(0,1,2),
-                        dtype={'names': ('user', 'movie', 'rating'),
-                               'formats':(np.int, 'int', 'i4')},
-                       ) # replace 0 with the correct cod eto load the movie data
+                        delimiter = '\t', usecols=(0,1,2),
+                        dtype = {'names': ('user', 'movie', 'rating'),
+                                'formats' : (np.int, 'int', 'i4')
+                               }
+                       ) # replace 0 with the correct code to load the movie data
 
-print(movieData)
-print(movieNames)
-print(movieDict)
+#print(movieData)
+#print(movieNames)
+#print(movieDict)
 
-exit(0) # Delete this after we finish phase 1, for now just get the data loaded
+# Delete this after we finish phase 1, for now just get the data loaded
 
 ########################################################
 # Begin Phase 2
@@ -101,8 +104,9 @@ for movie in movieData:
 movieRating = {} # replace 0 with code for an empty dictionary
 movieRatingCount = {} # replace 0 with code for an empty dictionary
 for key in movieRatingTemp:
-    movieRating[key]=np.sum(movieRatingTemp[key])
-    movieRatingCount[key]=len(movieRatingTemp[key])
+    movieRatingCount[key] = len(movieRatingTemp[key])
+    movieRating[key]=np.sum(movieRatingTemp[key])/movieRatingCount
+
 # Using numpy place the average rating for each movie in movieRating and the total number of ratings in movieRatingCount
 # Note: You will need a for loop to get each dictionary key
 
@@ -113,24 +117,27 @@ movieRatingS = sorted(movieRating.iteritems(), key=lambda (k,v): (v,k), reverse=
 
 # Top 10 Movies
 print("Top Ten Movies:")
-for i in range(0,10):
-    print('Movie: '+ str(movieDict[movieRatingS[i][0]])+
+for i in range(0, 10):
+    print(str(i+1)+('Movie: '+ str(movieDict[movieRatingS[i][0]])+
     'Movie Rating: '+ str(movieRatingS[i][1])+
-    'Rating Count: '+str(movieRatingCount[movieRatingS]))
+    'Rating Count: '+str(movieRatingCount[movieRatingS])))
+print('')
 # Print the top 10 movies
 # It should print the number, title, id, rating and count of reviews for each movie
 # ie 2. Someone Else's America (1995) (ID: 1599) Rating: 5.0 Count: 1
 
 movies_printed=0
-i=0
+i = 0
 # Top 10 Movies with at least 100 ratings    
 print("\n\nTop Ten movies with at least 100 ratings:")
-while movies_printed<10:
+while movies_printed<11:
     key=movieRatingS[i][0]
     if movieRatingCount>100:
         print('Movie: ' + str(movieDict[movieRatingS[i][0]]) +
-              'Movie Rating: ' + str(movieRatingS[i][1]) +
+              'Movie Rating: ' + str(key) +
               'Rating Count: ' + str(movieRatingCount[movieRatingS]))
+        movies_printed += 1
+    i += 1
 # It should print the same thing, but this time all the movies should have over 100 ratings
 # The number should be the movie's absolute rank
 # ie (16. Close Shave, A (1995) (ID: 408) Rating: 4.49 Count: 112)
