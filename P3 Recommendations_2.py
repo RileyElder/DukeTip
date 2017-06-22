@@ -93,10 +93,10 @@ movieData = np.loadtxt('./ml-100k/u.data',
 
 # Create a dictionary to hold our temporary ratings
 movieRatingTemp = {} # replace 0 with code for an empty dictionary
-for movie in movieData:
-    if movie['movie'] not in movieRatingTemp:
-        movieRatingTemp[movie['movie']]=[]
-    movieRatingTemp[movie['movie']].append(movie['Rate'])
+for row in movieData:
+    if row['movie'] not in movieRatingTemp:
+        movieRatingTemp[row['movie']]=[]
+    movieRatingTemp[row['movie']].append(row['rating'])
 # For every row in the movie data, add the rating to a list in the dictionary entry
 # for that movies ID (don't forget to initialize the dictionary entry)
 
@@ -104,8 +104,8 @@ for movie in movieData:
 movieRating = {} # replace 0 with code for an empty dictionary
 movieRatingCount = {} # replace 0 with code for an empty dictionary
 for key in movieRatingTemp:
+    movieRating[key] = np.mean(movieRatingTemp[key])
     movieRatingCount[key] = len(movieRatingTemp[key])
-    movieRating[key]=np.sum(movieRatingTemp[key])/movieRatingCount
 
 # Using numpy place the average rating for each movie in movieRating and the total number of ratings in movieRatingCount
 # Note: You will need a for loop to get each dictionary key
@@ -118,9 +118,11 @@ movieRatingS = sorted(movieRating.iteritems(), key=lambda (k,v): (v,k), reverse=
 # Top 10 Movies
 print("Top Ten Movies:")
 for i in range(0, 10):
-    print(str(i+1)+('Movie: '+ str(movieDict[movieRatingS[i][0]])+
-    'Movie Rating: '+ str(movieRatingS[i][1])+
-    'Rating Count: '+str(movieRatingCount[movieRatingS])))
+    key=movieRatingS[i][0]
+    print(str(i + 1) + ('  Movie Name: ' + movieDict[key] +
+                        '  Rating: ' + str(movieRatingS[i][1]) +
+                        '  Movie ID: ' + str(key) +
+                        '  Rating Count: ' + str(movieRatingCount[key])))
 print('')
 # Print the top 10 movies
 # It should print the number, title, id, rating and count of reviews for each movie
@@ -130,20 +132,19 @@ movies_printed=0
 i = 0
 # Top 10 Movies with at least 100 ratings    
 print("\n\nTop Ten movies with at least 100 ratings:")
-while movies_printed<11:
+while movies_printed<10:
     key=movieRatingS[i][0]
-    if movieRatingCount>100:
-        print('Movie: ' + str(movieDict[movieRatingS[i][0]]) +
-              'Movie Rating: ' + str(key) +
-              'Rating Count: ' + str(movieRatingCount[movieRatingS]))
+    if movieRatingCount[key]>100:
+        print(str(i + 1) + ('  Movie Name: ' + movieDict[key] +
+                            '  Rating: ' + str(movieRatingS[i][1]) +
+                            '  Movie ID: ' + str(key)+
+                            '  Rating Count: ' + str(movieRatingCount[key])))
         movies_printed += 1
     i += 1
 # It should print the same thing, but this time all the movies should have over 100 ratings
 # The number should be the movie's absolute rank
 # ie (16. Close Shave, A (1995) (ID: 408) Rating: 4.49 Count: 112)
 # Number 16 is first in this list because it's the first movie with over 100 ratings
-
-exit(0) # Remove this line after we finish phase 2
 
 ########################################################
 # Begin Phase 3
@@ -152,20 +153,38 @@ exit(0) # Remove this line after we finish phase 2
 # Create a user likes numpy ndarray so we can use Jaccard Similarity
 # A user "likes" a movie if they rated it a 4 or 5
 # Create a numpy ndarray of zeros with demensions of max user id + 1 and max movie + 1 (because we'll use them as 1 indexed not zero indexed)
+movieID_Temp = {}
+for row in movieData:
+    if row['movie'] not in movieID_Temp:
+        movieID_Temp[row['movie']]=[]
+    movieID_Temp[row['movie']].append(row['movie'])
+movieID={}
+for key in movieID_Temp:
+    movieID[key] = (movieID_Temp[key])
+movieID_S = sorted(movieID.iteritems(), key=lambda (k,v): (v,k), reverse=True)
 
 # Find the max movie ID + 1
-maxMovie = 0 # replace 0 with the correct code
+maxMovie = (movieID_S[i][0])+1 # replace 0 with the correct code
+userID_Temp = {}
+for row in movieData:
+    if row['user'] not in userID_Temp:
+        userID_Temp[row['user']]=[]
+        userID_Temp[row['user']].append(row['user'])
+userID={}
+for key in userID_Temp:
+    userID[key] = (userID_Temp[key])
+userID_S = sorted(userID.iteritems(), key=lambda (k,v): (v,k), reverse=True)
 
 # Find the max user Id + 1
-maxUser = 0 # replace 0 with the correct code
-
+maxUser = (userID_S[i][0])+1 # replace 0 with the correct code
 # Create an array of 0s which will fill in with 1s when a user likes a movie
 userLikes = np.zeros((maxUser, maxMovie))
 
 # Go through all the rows of the movie data.
 # If the user rated a movie as 4 or 5 set userLikes to 1 for that user and movie
 # Note: You'll need a for loop and an if statement
-
+#for row in movieData:
+    #if
 
 ########################################################
 # At this point, go back up to the top and fill in the
