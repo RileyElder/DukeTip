@@ -1,0 +1,9 @@
+print 'You wake up in a small stone room with a barred door, two wooden chairs, and a slit window. '
+fst_c=raw_input('Type an object to inspect:').lower()
+if fst_c==('chair' or 'chairs'):
+    print 'You walk to the chairs, brushing your head on the low ceiling.' \
+          'Upon inspection, they seem flimsier than you thought at first glance. '
+    fst_ca1=raw_input('Action?:').lower()
+    if fst_ca1==('hit' or 'smash' or 'break' or 'throw'):
+        print 'The chairs break at the joints, leaving you with a usable piece of wood.'
+        print 'inventory updated'
