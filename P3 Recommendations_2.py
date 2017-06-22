@@ -183,7 +183,7 @@ userLikes = np.zeros((maxUser, maxMovie))
 # Go through all the rows of the movie data.
 # If the user rated a movie as 4 or 5 set userLikes to 1 for that user and movie
 # Note: You'll need a for loop and an if statement
-#for row in movieData:
+for row in movieData:
     #if
 
 ########################################################
