@@ -12,7 +12,8 @@ def findSimilar(iLike, userLikes):
     # Create an Or similarity
     userSimilarityOr = (iLike or userLikes) # replace 0 with the correct code
     # Calculate the similarity
-    userSimilarity = ((similarityAnd)/((len(iLike)+len(userLikes)-(similarityAnd))))# replace 0 with the correct code to calculate the Jaccard Index for each user
+    userSimilarity = ((similarityAnd)/(userSimilarityOr))# replace 0 with the correct code to calculate the Jaccard Index for each user
+    while similarityAnd!=userSimilarityOr:
 
     # Make the most similar user has a new like that the previous user did not have
     # I used a while loop.
