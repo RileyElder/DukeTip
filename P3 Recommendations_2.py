@@ -4,18 +4,16 @@ import numpy as np
 ########################################################
 # These functions will be used in Phase 3 (skip for now)
 ########################################################
-
 def findSimilar(iLike, userLikes):
     # Create an And similarity
-    similarityAnd = 0 # replace 0 with the correct code
+    similarityAnd = (iLike and userLikes) # replace 0 with the correct code
     # Create a per user sum
-    similaritySum = 0 # replace 0 with the correct code
+    similarityAndSum = (np.sum(iLike))# replace 0 with the correct code
     # Create an Or similarity
-    userSimilarityOr = 0 # replace 0 with the correct code
-    
+    userSimilarityOr = (iLike or userLikes) # replace 0 with the correct code
     # Calculate the similarity
-    userSimilarity = 0 # replace 0 with the correct code to calculate the Jaccard Index for each user
-    
+    userSimilarity = ((similarityAnd)/((len(iLike)+len(userLikes)-(similarityAnd))))# replace 0 with the correct code to calculate the Jaccard Index for each user
+
     # Make the most similar user has a new like that the previous user did not have
     # I used a while loop.
     # You can "get rid" of a user that is most similar, but doesn't have any new likes
@@ -164,7 +162,7 @@ for key in movieID_Temp:
 movieID_S = sorted(movieID.iteritems(), key=lambda (k,v): (v,k), reverse=True)
 
 # Find the max movie ID + 1
-maxMovie = (movieID_S[i][0])+1 # replace 0 with the correct code
+maxMovie = (movieID_S[0][0])+1 # replace 0 with the correct code
 userID_Temp = {}
 for row in movieData:
     if row['user'] not in userID_Temp:
@@ -176,16 +174,15 @@ for key in userID_Temp:
 userID_S = sorted(userID.iteritems(), key=lambda (k,v): (v,k), reverse=True)
 
 # Find the max user Id + 1
-maxUser = (userID_S[i][0])+1 # replace 0 with the correct code
+maxUser = (userID_S[0][0])+1 # replace 0 with the correct code
 # Create an array of 0s which will fill in with 1s when a user likes a movie
 userLikes = np.zeros((maxUser, maxMovie))
-
 # Go through all the rows of the movie data.
 # If the user rated a movie as 4 or 5 set userLikes to 1 for that user and movie
 # Note: You'll need a for loop and an if statement
 for row in movieData:
-    #if
-
+    if row['rating']>3:
+        userLikes[row['user'],row['movie']]=1
 ########################################################
 # At this point, go back up to the top and fill in the
 # functions up there
@@ -194,18 +191,17 @@ for row in movieData:
 # First sample user
 # User Similiarity: 0.133333333333
 iLike = [655, 315, 66, 96, 194, 172]
-processLikes(iLike)
-
+iLikeNp=np.zeros(maxMovie)
 # What if it's an exact match? We should return the next closest match
 # Second sample case
 # User Similiarity: 0.172413793103
-iLike = [ 79,  96,  98, 168, 173, 176,194, 318, 357, 427, 603]
+iLike = [79,  96,  98, 168, 173, 176,194, 318, 357, 427, 603]
 processLikes(iLike)
 
 # What if we've seen all the movies they liked?
 # Third sample case
 # User Similiarity: 0.170731707317
-iLike = [ 79,  96,  98, 168, 173, 176,194, 318, 357, 427, 603, 1]
+iLike = [79,  96,  98, 168, 173, 176,194, 318, 357, 427, 603, 1]
 processLikes(iLike)
 
 # If your code completes the above recommendations properly, you're ready for the last part,
