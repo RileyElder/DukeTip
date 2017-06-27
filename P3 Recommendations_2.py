@@ -15,7 +15,7 @@ def findSimilar(iLike, userLikes):
     userSimilarity = ((similarityAnd)/(userSimilarityOr))# replace 0 with the correct code to calculate the Jaccard Index for each user
     newlike=iLike-userLikes
     while len(newlike[newlike>0])>0: #cuts users who like no new movies
-        maxIndex=userSimilarity['id'] 
+        maxIndex=userSimilarity['id']
     # Make the most similar user has a new like that the previous user did not have
     # I used a while loop.
     # You can "get rid" of a user that is most similar, but doesn't have any new likes
@@ -131,15 +131,15 @@ movies_printed=0
 i = 0
 # Top 10 Movies with at least 100 ratings    
 print("\n\nTop Ten movies with at least 100 ratings:")
-while movies_printed<10:
-    key=movieRatingS[i][0]
-    if movieRatingCount[key]>100:
+while movies_printed<10: #prints only 10
+    key=movieRatingS[i][0] #makes the code prettier
+    if movieRatingCount[key]>100:#only prints if rating count>100
         print(str(i + 1) + ('  Movie Name: ' + movieDict[key] +
                             '  Rating: ' + str(movieRatingS[i][1]) +
                             '  Movie ID: ' + str(key)+
                             '  Rating Count: ' + str(movieRatingCount[key])))
         movies_printed += 1
-    i += 1
+    i += 1 #moves the row down every time
 # It should print the same thing, but this time all the movies should have over 100 ratings
 # The number should be the movie's absolute rank
 # ie (16. Close Shave, A (1995) (ID: 408) Rating: 4.49 Count: 112)
@@ -182,7 +182,7 @@ userLikes = np.zeros((maxUser, maxMovie))
 # Go through all the rows of the movie data.
 # If the user rated a movie as 4 or 5 set userLikes to 1 for that user and movie
 # Note: You'll need a for loop and an if statement
-for row in movieData:
+for row in movieData:#creates array of likes/dislikes
     if row['rating']>3:
         userLikes[row['user'],row['movie']]=1
 ########################################################
