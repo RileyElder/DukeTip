@@ -15,7 +15,7 @@ def findSimilar(iLike, userLikes):
     userSimilarity = ((similarityAnd)/(userSimilarityOr))# replace 0 with the correct code to calculate the Jaccard Index for each user
     newlike=iLike-userLikes
     while len(newlike[newlike>0])>0: #cuts users who like no new movies
-        maxIndex=userSimilarity['id']
+        maxIndex=userSimilarity['id'] 
     # Make the most similar user has a new like that the previous user did not have
     # I used a while loop.
     # You can "get rid" of a user that is most similar, but doesn't have any new likes
