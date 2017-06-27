@@ -8,13 +8,14 @@ def findSimilar(iLike, userLikes):
     # Create an And similarity
     similarityAnd = (iLike and userLikes) # replace 0 with the correct code
     # Create a per user sum
-    similarityAndSum = (np.sum(iLike))# replace 0 with the correct code
+    similarityAndSum = (np.sum(iLike + userLikes-(iLike and userLikes)))# replace 0 with the correct code
     # Create an Or similarity
     userSimilarityOr = (iLike or userLikes) # replace 0 with the correct code
     # Calculate the similarity
     userSimilarity = ((similarityAnd)/(userSimilarityOr))# replace 0 with the correct code to calculate the Jaccard Index for each user
-    while similarityAnd!=userSimilarityOr:
-
+    newlike=iLike-userLikes
+    while len(newlike[newlike>0])>0: #cuts users who like no new movies
+        maxIndex=userSimilarity['id']
     # Make the most similar user has a new like that the previous user did not have
     # I used a while loop.
     # You can "get rid" of a user that is most similar, but doesn't have any new likes
@@ -29,8 +30,7 @@ def findSimilar(iLike, userLikes):
 def printMovie(id):
     # Print the id of the movie and the name.  This should look something like
     # "    - 430: Duck Soup (1933)" if the id is 430 and the name is Duck Soup (1933)
-    print(0) # replace 0 with the correct code
-
+    print()
 def processLikes(iLike):
     print("\n\nSince you like:")
     
@@ -59,7 +59,7 @@ def processLikes(iLike):
 
 # Load Data
 # Load the movie names data (u.item) with just columns 0 and 1 (id and name) id is np.int, name is S128
-movieNames = np.loadtxt('.\ml-100k\u.item',
+movieNames = np.loadtxt('.\ml-100k\u.item', #loads movie names
                         delimiter='|', usecols=(0, 1),
                         dtype={'names': ('id', 'name'),
                                 'formats': (np.int, 'S128')
@@ -70,7 +70,7 @@ movieNames = np.loadtxt('.\ml-100k\u.item',
 # Create a dictionary with the ids as keys and the names as the values
 movieDict = dict(zip(movieNames['id'], movieNames['name'])) # replace 0 with the code to make the dict
 # Load the movie Data (u.data) with just columns 0, 1, and 2 (user, movie, rating) all are np.int
-movieData = np.loadtxt('./ml-100k/u.data',
+movieData = np.loadtxt('./ml-100k/u.data',#loads movie info
                         delimiter = '\t', usecols=(0,1,2),
                         dtype = {'names': ('user', 'movie', 'rating'),
                                 'formats' : (np.int, 'int', 'i4')
@@ -91,7 +91,7 @@ movieData = np.loadtxt('./ml-100k/u.data',
 # This is non-ideal, pandas, scipy, or graphlib should be used here
 
 # Create a dictionary to hold our temporary ratings
-movieRatingTemp = {} # replace 0 with code for an empty dictionary
+movieRatingTemp = {}
 for row in movieData:
     if row['movie'] not in movieRatingTemp:
         movieRatingTemp[row['movie']]=[]
@@ -100,8 +100,8 @@ for row in movieData:
 # for that movies ID (don't forget to initialize the dictionary entry)
 
 # Create an empty dictionary for movieRating and movieRatingCount
-movieRating = {} # replace 0 with code for an empty dictionary
-movieRatingCount = {} # replace 0 with code for an empty dictionary
+movieRating = {} #empty dictionary
+movieRatingCount = {} #empty dictionary
 for key in movieRatingTemp:
     movieRating[key] = np.mean(movieRatingTemp[key])
     movieRatingCount[key] = len(movieRatingTemp[key])
@@ -152,7 +152,7 @@ while movies_printed<10:
 # Create a user likes numpy ndarray so we can use Jaccard Similarity
 # A user "likes" a movie if they rated it a 4 or 5
 # Create a numpy ndarray of zeros with demensions of max user id + 1 and max movie + 1 (because we'll use them as 1 indexed not zero indexed)
-movieID_Temp = {}
+movieID_Temp = {}#sorts movie ID's, highest at zero index
 for row in movieData:
     if row['movie'] not in movieID_Temp:
         movieID_Temp[row['movie']]=[]
@@ -163,8 +163,9 @@ for key in movieID_Temp:
 movieID_S = sorted(movieID.iteritems(), key=lambda (k,v): (v,k), reverse=True)
 
 # Find the max movie ID + 1
-maxMovie = (movieID_S[0][0])+1 # replace 0 with the correct code
-userID_Temp = {}
+maxMovie = (movieID_S[0][0])+1 #sets maxMovie to 1 index
+
+userID_Temp = {}#sorts user ID's, highest at zero index
 for row in movieData:
     if row['user'] not in userID_Temp:
         userID_Temp[row['user']]=[]
